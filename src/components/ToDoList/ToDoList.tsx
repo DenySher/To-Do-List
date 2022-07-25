@@ -1,36 +1,43 @@
-
-type TaskType = {
-    id: number
-    title: string
-    isDone: boolean
-}
+import { TaskType } from '../../App'
+import { FilterValueType } from '../../App'
 
 type PropsType = {
     title: string
     tasks: Array<TaskType>
+    removeTask: (taskID: number) => void,
+    changeFilter: (filter: FilterValueType) => void
 }
 
 function ToDoList(props: PropsType) {
+
+    const taskItems = props.tasks.map((task: TaskType) => {
+        return (
+            <li key={task.id}>
+                <input type="checkbox" checked={task.isDone} />
+                <span>{task.title}</span>
+                <button onClick={() => props.removeTask(task.id)}>del</button>
+            </li>
+        )
+    })
+
     return (
         <div>
-        <div>
-            <h3>{props.title}</h3>
             <div>
-                <input placeholder='add'/>
-                <button>+</button>
-            </div>
-            <ul>
-                <li><input type="checkbox" checked={props.tasks[0].isDone}/> <span>{props.tasks[0].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[1].isDone}/> <span>{props.tasks[1].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[2].isDone}/> <span>{props.tasks[2].title}</span></li>
-            </ul>
-            <div>
-                <button>All</button>
-                <button>Active</button>
-                <button>Completed</button>
+                <h3>{props.title}</h3>
+                <div>
+                    <input placeholder='add' />
+                    <button>+</button>
+                </div>
+                <ul>
+                    {taskItems}
+                </ul>
+                <div>
+                    <button onClick={() => props.changeFilter('all')}>All</button>
+                    <button onClick={() => props.changeFilter('activ')}>Active</button>
+                    <button onClick={() => props.changeFilter('completed')}>Completed</button>
+                </div>
             </div>
         </div>
-    </div>
     )
 }
 
