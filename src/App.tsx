@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import { v1 } from 'uuid';
 import './App.css';
 import ToDoList from './components/ToDoList/ToDoList';
 
 export type TaskType = {
-    id: number
+    id: string
     title: string
     isDone: boolean
 }
@@ -13,20 +14,29 @@ export type FilterValueType = 'all' | 'activ' | 'completed'
 function App() {
 
     const [tasks, setTasks] = useState<Array<TaskType>>([
-        { id: 1, title: 'HTML&CSS', isDone: true },
-        { id: 2, title: 'JS', isDone: true },
-        { id: 3, title: 'RwactJS', isDone: false }
+        { id: v1(), title: 'HTML&CSS', isDone: true },
+        { id: v1(), title: 'JS', isDone: true },
+        { id: v1(), title: 'RwactJS', isDone: false }
     ])
 
     const [filter, setFilter] = useState<FilterValueType>('all')
 
-
-    const removeTask = (taskID: number) => {
+    const removeTask = (taskID: string) => {
         setTasks(tasks.filter(task => task.id !== taskID))
     }
 
     const changeFilter = (filter: FilterValueType) => {
         setFilter(filter)
+    }
+
+    const addTask = (title: string) => { // получаем value  из input
+        // const newTask: TaskType = { // создаем новый объект с таском
+        //     id: v1(),
+        //     title, // ключ и значение совпадают, по этому можно так напистаь
+        //     isDone: false
+        // }
+        // setTasks([...tasks, newTask]) // положили копию тасков, и запушили новый таск
+        setTasks([{id: v1(), title, isDone: false}, ...tasks]) // современное написание!
     }
 
     let tasksForRender;
@@ -47,6 +57,7 @@ function App() {
                 tasks={tasksForRender}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
+                addTask={addTask}
             />
         </div>
     );
