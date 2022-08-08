@@ -16,7 +16,7 @@ function App() {
     const [tasks, setTasks] = useState<Array<TaskType>>([
         { id: v1(), title: 'HTML&CSS', isDone: true },
         { id: v1(), title: 'JS', isDone: true },
-        { id: v1(), title: 'RwactJS', isDone: false }
+        { id: v1(), title: 'ReactJS', isDone: false }
     ])
 
     const [filter, setFilter] = useState<FilterValueType>('all')
@@ -36,7 +36,11 @@ function App() {
         //     isDone: false
         // }
         // setTasks([...tasks, newTask]) // положили копию тасков, и запушили новый таск
-        setTasks([{id: v1(), title, isDone: false}, ...tasks]) // современное написание!
+        setTasks([{ id: v1(), title, isDone: false }, ...tasks]) // современное написание!
+    }
+
+    const changeTask = (taskID: string, isDone: boolean) => {
+        setTasks(tasks.map(t => t.id === taskID ? { ...t, isDone } : t)) 
     }
 
     let tasksForRender;
@@ -58,6 +62,8 @@ function App() {
                 removeTask={removeTask}
                 changeFilter={changeFilter}
                 addTask={addTask}
+                changeTask={changeTask}
+                filter={filter}
             />
         </div>
     );
